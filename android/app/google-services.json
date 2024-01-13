@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "103891871999",
+    "project_id": "senior-firebase",
+    "storage_bucket": "senior-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103891871999:android:090e855b2123329cda04ca",
+        "android_client_info": {
+          "package_name": "com.example.senior1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmj_2vkzIK8GDH5v9HmChg1CzXN4r5mAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
