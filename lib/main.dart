@@ -18,18 +18,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:senior1/services/notifications_service.dart';
 import 'Features/user_auth/firebase_auth_implementation/firebase_auth_services.dart';
-@pragma('vm:entry-point')
+import 'firebase_options.dart';
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //print('A bg message just showed up : ${message.messageId}');
   try {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: "AIzaSyDFLgRQMOXx0Wmc6cD0nByKE5EtDtug8zU",
-        appId: "1:103891871999:web:9d4d3bb3641030cdda04ca",
-        messagingSenderId: "103891871999",
-        projectId: "senior-firebase",
-      ),
+      options: DefaultFirebaseOptions.currentPlatform,
     );
   } catch (e) {}
 }
@@ -50,6 +45,8 @@ void showTerminatedNotification(String containerName) async {
   var request =
   http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
   request.body = jsonEncode({
+    // this token should be stored in users model.
+    // and this API should be called from a third party software or hardware.
     "to":
     "dpuLjw44SYCk6mI_ni4zd-:APA91bECdAt-FvQOKPXq7JayveVo0wxnwvlicVFeCkBM5oZw0yf3pZiSxCmMeTsjE8gR-r7PsxiAdmZEFLX6goChHRkWJwumqGFmwgQbGEb4AwFiPVeli5Fil6XRbYqE39UVkx4tO1QP",
     "notification": {
@@ -68,38 +65,15 @@ void showTerminatedNotification(String containerName) async {
   }
 }
 
-
-
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   NotificationsService();
 
-  // getFcmToken();
   final User? user = FirebaseAuth.instance.currentUser;
-
-
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-  if (kIsWeb) {
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: FirebaseOptions(
-          apiKey: "AIzaSyDFLgRQMOXx0Wmc6cD0nByKE5EtDtug8zU",
-          appId: "1:103891871999:web:9d4d3bb3641030cdda04ca",
-          messagingSenderId: "103891871999",
-          projectId: "senior-firebase",
-        ),
-      );
-    }
-  }
-
   // Check if there's a user already logged in
   String? role;
 
